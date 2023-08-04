@@ -82,7 +82,6 @@ export default {
       // chainID: 56,
       chainID: 0,
       userAddress: null,
-      list: [],
       contractList: [],
       tokensInfo: [],
     };
@@ -120,6 +119,16 @@ export default {
         window.ethereum.on("accountsChanged", (accounts) => {
           this.userAddress = accounts[0];
         });
+
+        window.ethereum.on("disconnect", (error) => {
+          if (error != null) {
+            console.log(error);
+          }
+
+          this.contractList = [];
+          this.tokensInfo = [];
+        });
+
         console.log("Connected to Metamask with address:", this.userAddress);
       } catch (error) {
         console.error("Error connecting to Metamask:", error);
@@ -135,6 +144,10 @@ export default {
       await window.ethereum.request({ method: "eth_accounts" });
     },
     async fetchAllTokenIDs() {
+      if (window.ethereum.isConnected() == false) {
+        return;
+      }
+
       if (this.chainID == 0 || this.userAddress == null) {
         return;
       }

@@ -28,7 +28,7 @@
 
     <v-main class="bg-grey-lighten-2">
       <v-container>
-        <v-row>
+        <v-row v-if="contractList.length > 0">
           <template v-for="item in contractList" :key="item.address">
             <v-col class="mt-2" cols="12">
               <p><strong>Name : </strong> {{ item.tokenName }}</p>
@@ -70,6 +70,9 @@
             </v-col>
           </template>
         </v-row>
+        <v-row v-else>
+          <h3>{{ progressMessage }}</h3>
+        </v-row>
       </v-container>
     </v-main>
   </v-app>
@@ -96,6 +99,7 @@ export default {
       userAddress: null,
       contractList: [],
       tokensInfo: [],
+      progressMessage: "",
     };
   },
   watch: {
@@ -159,6 +163,8 @@ export default {
       await window.ethereum.request({ method: "eth_accounts" });
     },
     async fetchAllTokenIDs() {
+      this.progressMessage = "처리중입니다.";
+
       if (window.ethereum.isConnected() == false) {
         return;
       }
@@ -178,12 +184,18 @@ export default {
         // curl "https://appsdev.metaplanet.tech/v1/nft/info?chainID=56&address=0x18817A4d5C25d3B43eE6EB1cD29304A7133fD877&
         // contractAddress=0xBf1b80294CbA70946966b645f5450a4ac4f4c19e&tokenID=0"
 
+        if (response.data.list.length == 0) {
+          this.progressMessage = "보유한 NFT가 없습니다.";
+        }
+
         for (let item of response.data.list) {
           if (
             item.address == "0x191d1918C31F54927F91F4DC3a600bEde1C41FEa" ||
             item.address == "0x8f8FB896aBCE28DAe62258985407008689f1D3D0" ||
             item.address == "0x9107f7d41e5E5E9131E5cEf4df4a8e529C835da6" ||
             item.address == "0xee2C8015CC281Abed61C4ebE956d561546a124b3"
+            // item.address == "0x0B2E5Dc44B5e172C062C949ecCa13fC6B5F0561A"
+            // item.address == "0x06F4e029CB742502dfA161672c74a51A5D3565c9"
           )
             continue;
           let inventory = [];

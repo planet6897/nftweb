@@ -49,7 +49,7 @@
                 ></v-img>
                 <div style="border-bottom: 1px dashed grey"></div>
                 <h4 class="tokenName">
-                  <strong>Name : </strong>{{ inventory.name }}
+                  <strong>{{ inventory.name }}</strong>
                 </h4>
                 <table>
                   <tr>

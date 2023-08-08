@@ -177,52 +177,44 @@ export default {
         const apiUrl = `https://appsdev.metaplanet.tech/v1/nft/list?chainID=${this.chainID}&address=${this.userAddress}`;
 
         const response = await axios.get(apiUrl);
+
         let tokensInfo = {};
         let contractList = [];
-        // console.log(response.data.list);
+
         // const apiUrl = `https://appsdev.metaplanet.tech/v1/nft/list?chainID=${this.chainID}&address=${this.userAddress}`;
         // curl "https://appsdev.metaplanet.tech/v1/nft/info?chainID=56&address=0x18817A4d5C25d3B43eE6EB1cD29304A7133fD877&
         // contractAddress=0xBf1b80294CbA70946966b645f5450a4ac4f4c19e&tokenID=0"
 
         if (response.data.list.length == 0) {
           this.progressMessage = "보유한 NFT가 없습니다.";
+        } else {
+          let nftCount = 0;
+          for (let item of response.data.list) {
+            nftCount += item.tokenIDs.length;
+          }
+          this.progressMessage = `처리중입니다... ${nftCount} 개의 NFT를 소유하고 있습니다.`;
         }
 
         for (let item of response.data.list) {
-          if (
-            item.address == "0x191d1918C31F54927F91F4DC3a600bEde1C41FEa" ||
-            item.address == "0x8f8FB896aBCE28DAe62258985407008689f1D3D0" ||
-            item.address == "0x9107f7d41e5E5E9131E5cEf4df4a8e529C835da6" ||
-            item.address == "0xee2C8015CC281Abed61C4ebE956d561546a124b3"
-            // item.address == "0x0B2E5Dc44B5e172C062C949ecCa13fC6B5F0561A"
-            // item.address == "0x06F4e029CB742502dfA161672c74a51A5D3565c9"
-          )
-            continue;
           let inventory = [];
           for (let tokenID of item.tokenIDs) {
             try {
               const apiUrl = `https://appsdev.metaplanet.tech/v1/nft/info?chainID=${this.chainID}&address=${this.userAddress}&contractAddress=${item.address}&tokenID=${tokenID}`;
               const response = await axios.get(apiUrl);
               inventory[tokenID] = response.data;
-              // console.log(tokenID, response.data);
             } catch (err) {
               console.log(err);
             }
           }
           tokensInfo[item.address] = inventory;
-          console.log(tokensInfo[item.address]);
           contractList.push(item);
         }
         this.tokensInfo = JSON.parse(JSON.stringify(tokensInfo));
         this.contractList = JSON.parse(JSON.stringify(contractList));
-        // console.log(this.contractList);
-        // console.log(this.tokensInfo);
         // this.$forceUpdate(); // Manually trigger a screen update (re-render)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-
-      // console.log(this.tokensInfo);
     },
     filteredInventory(address) {
       // Assuming this.tokensInfo is a data property containing the inventory data

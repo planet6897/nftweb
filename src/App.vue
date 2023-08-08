@@ -31,9 +31,9 @@
         <v-row>
           <template v-for="item in contractList" :key="item.address">
             <v-col class="mt-2" cols="12">
-              <strong>Name {{ item.tokenName }}</strong>
-              <strong> - {{ item.tokenSymbol }}</strong>
-              <span> ({{ item.address }})</span>
+              <p><strong>Name : </strong> {{ item.tokenName }}</p>
+              <p><strong>Symbol : </strong> {{ item.tokenSymbol }}</p>
+              <p><strong>Address : </strong> {{ item.address }}</p>
             </v-col>
 
             <v-col
@@ -45,14 +45,16 @@
                   :src="inventory.image"
                   :alt="inventory.name"
                   style="margin: 10px"
+                  @click="imageClick(`${inventory.image}`)"
                 ></v-img>
-                <h4>{{ inventory.name }}</h4>
+                <h4><strong>Name : </strong>{{ inventory.name }}</h4>
                 <template
                   v-for="attr in inventory.attributes"
                   :key="`${attr.trait_type}${attr.value}`"
                 >
-                  <!-- <span>{{ attr.trait_type }} | </span> -->
-                  <h4>{{ attr.value }}</h4>
+                  <h4>
+                    <strong> {{ attr.trait_type }} : </strong>{{ attr.value }}
+                  </h4>
                 </template>
               </v-sheet>
             </v-col>
@@ -95,6 +97,9 @@ export default {
     },
   },
   methods: {
+    imageClick(imageUrl) {
+      window.open(imageUrl, "_blank");
+    },
     async connectAndLogin() {
       // Check if Metamask is installed
       if (typeof window.ethereum === "undefined") {

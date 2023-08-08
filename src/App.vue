@@ -47,15 +47,25 @@
                   style="margin: 10px"
                   @click="imageClick(`${inventory.image}`)"
                 ></v-img>
-                <h4><strong>Name : </strong>{{ inventory.name }}</h4>
-                <template
-                  v-for="attr in inventory.attributes"
-                  :key="`${attr.trait_type}${attr.value}`"
-                >
-                  <h4>
-                    <strong> {{ attr.trait_type }} : </strong>{{ attr.value }}
-                  </h4>
-                </template>
+                <div style="border-bottom: 1px dashed grey"></div>
+                <h4 class="tokenName">
+                  <strong>Name : </strong>{{ inventory.name }}
+                </h4>
+                <table>
+                  <tr>
+                    <th>trait_type</th>
+                    <th>value</th>
+                  </tr>
+                  <template
+                    v-for="attr in inventory.attributes"
+                    :key="`${attr.trait_type}${attr.value}`"
+                  >
+                    <tr>
+                      <td>{{ attr.trait_type }}</td>
+                      <td>{{ attr.value }}</td>
+                    </tr>
+                  </template>
+                </table>
               </v-sheet>
             </v-col>
           </template>
@@ -236,5 +246,27 @@ export default {
 
 .connect-button img {
   margin-right: 8px; /* Add margin to the right of the image for spacing */
+}
+
+.tokenName {
+  margin-top: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid black;
+  font-size: 10px;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
 }
 </style>

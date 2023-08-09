@@ -13,6 +13,18 @@
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>My NFT</v-toolbar-title>
+      <v-text-field
+        :loading="loading"
+        density="compact"
+        variant="solo"
+        label="Search templates"
+        prepend-inner-icon="mdi-magnify"
+        single-line
+        hide-details
+        @click:append-inner="onClick"
+        class="search_text"
+        v-model="address"
+      ></v-text-field>
       <div v-if="isLoggedIn" class="connect-button">
         <!-- <button @click="logout">Logout</button> -->
         <strong> {{ userAddress }}</strong>
@@ -97,6 +109,7 @@ export default {
       // chainID: 56,
       chainID: 0,
       userAddress: null,
+      address: null,
       contractList: [],
       tokensInfo: [],
       progressMessage: "",
@@ -107,6 +120,9 @@ export default {
       this.fetchAllTokenIDs();
     },
     userAddress() {
+      this.address = this.userAddress
+    },
+    address() {
       this.fetchAllTokenIDs();
     },
   },
@@ -169,12 +185,12 @@ export default {
         return;
       }
 
-      if (this.chainID == 0 || this.userAddress == null) {
+      if (this.chainID == 0 || this.address == null) {
         return;
       }
 
       try {
-        const apiUrl = `https://appsdev.metaplanet.tech/v1/nft/list?chainID=${this.chainID}&address=${this.userAddress}`;
+        const apiUrl = `https://appsdev.metaplanet.tech/v1/nft/list?chainID=${this.chainID}&address=${this.address}`;
 
         const response = await axios.get(apiUrl);
 
@@ -199,7 +215,7 @@ export default {
           let inventory = [];
           for (let tokenID of item.tokenIDs) {
             try {
-              const apiUrl = `https://appsdev.metaplanet.tech/v1/nft/info?chainID=${this.chainID}&address=${this.userAddress}&contractAddress=${item.address}&tokenID=${tokenID}`;
+              const apiUrl = `https://appsdev.metaplanet.tech/v1/nft/info?chainID=${this.chainID}&address=${this.address}&contractAddress=${item.address}&tokenID=${tokenID}`;
               const response = await axios.get(apiUrl);
               inventory[tokenID] = response.data;
             } catch (err) {
@@ -248,6 +264,9 @@ export default {
   text-overflow: ellipsis; /* Display ellipsis (...) for truncated text */
 }
 
+.search_text {
+  margin-right: 30px;
+}
 .connect-button img {
   margin-right: 8px; /* Add margin to the right of the image for spacing */
 }

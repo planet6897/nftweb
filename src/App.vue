@@ -43,9 +43,22 @@
         <v-row v-if="contractList.length > 0">
           <template v-for="item in contractList" :key="item.address">
             <v-col class="mt-2" cols="12">
-              <p><strong>Name : </strong> {{ item.tokenName }}</p>
-              <p><strong>Symbol : </strong> {{ item.tokenSymbol }}</p>
-              <p><strong>Address : </strong> {{ item.address }}</p>
+              <div class="contract_sheet">
+                <p class="contract_info">
+                  {{ item.tokenName }}
+                </p>
+                <p class="contract_detail">
+                  <strong>Symbol : </strong>{{ item.tokenSymbol }}
+                </p>
+                <p class="contract_detail">
+                  <strong>Address : </strong>
+                  <a
+                    :href="`${item.networkScanURL}/token/${item.address}`"
+                    target="_blank"
+                    >{{ item.address }}</a
+                  >
+                </p>
+              </div>
             </v-col>
 
             <v-col
@@ -57,18 +70,17 @@
                 width="250"
                 height="550"
                 style="
-                  margin: 10px;
                   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
                   border-radius: 15px;
                 "
               >
                 <v-img
+                  class="v-img"
                   :src="inventory.image"
                   :alt="inventory.name"
-                  style="margin: 10px; padding-top: 10px; border-radius: 20px"
                   @click="imageClick(`${inventory.image}`)"
                 ></v-img>
-                <h4 class="tokenName">
+                <h4 class="name">
                   <strong>{{ inventory.name }}</strong>
                 </h4>
                 <table>
@@ -89,7 +101,6 @@
               </v-sheet>
             </v-col>
           </template>
-          <hr style="border-top: 1px solid grey; margin-top: 10px" />
         </v-row>
         <v-row v-else>
           <h3>{{ progressMessage }}</h3>
@@ -250,10 +261,8 @@ export default {
 </script>
 <style>
 .embossed-sheet {
+  margin: 10px;
   border: 2px solid blue;
-  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1),
-    0 0 5px 4px rgba(255, 255, 255, 0.2), 0 0 5px 6px rgba(0, 0, 0, 0.1),
-    0 0 5px 8px rgba(255, 255, 255, 0.2);
   background: white;
 }
 
@@ -280,7 +289,32 @@ export default {
   margin-right: 8px; /* Add margin to the right of the image for spacing */
 }
 
-.tokenName {
+.contract_sheet {
+  margin-top: 20px;
+  background: lightblue;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.contract_info {
+  font-size: 40px;
+  font-style: italic;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.contract_detail {
+  margin-left: 80px;
+  font-size: 18px;
+}
+
+.v-img {
+  margin: 10px;
+  padding-top: 10px;
+  border-radius: 20px;
+}
+
+.name {
   text-align: center;
 }
 

@@ -117,7 +117,7 @@
           </template>
         </v-row>
         <v-row v-else>
-          <h3>{{ progressMessage }}</h3>
+          <div class="progressMessage">{{ progressMessage }}</div>
         </v-row>
       </v-container>
     </v-main>
@@ -213,7 +213,7 @@ export default {
       await window.ethereum.request({ method: "eth_accounts" });
     },
     async fetchAllTokenIDs() {
-      this.progressMessage = "처리중입니다.";
+      this.progressMessage = "처리 중입니다.";
 
       if (window.ethereum.isConnected() == false) {
         return;
@@ -242,7 +242,7 @@ export default {
           for (let item of response.data.list) {
             nftCount += item.tokenIDs.length;
           }
-          this.progressMessage = `처리중입니다... ${nftCount} 개의 NFT를 소유하고 있습니다.`;
+          this.progressMessage = `${nftCount}개의 NFT를 처리 중입니다...`;
         }
 
         for (let item of response.data.list) {
@@ -357,5 +357,11 @@ table > tr > td:nth-child(2) {
 table > tr > th:nth-child(1),
 table > tr > th:nth-child(2) {
   font-size: 17px;
+}
+
+.progressMessage {
+  font-size: 30px;
+  margin: 50px;
+  font-weight: bold;
 }
 </style>

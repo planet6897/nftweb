@@ -10,17 +10,31 @@
       <v-icon>mdi-triangle</v-icon>
     </v-system-bar> -->
 
-    <v-app-bar>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>My NFT</v-toolbar-title>
+    <v-app-bar style="background: rgb(50.62.69)">
+      <!-- <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon> -->
+      <v-toolbar-title>
+        <img
+          src="/logo01.png"
+          style="
+            max-width: 165px;
+            min-width: 165px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+          "
+          onclick="window.open('https://www.metaplanet.tech', '_blank');"
+        />
+      </v-toolbar-title>
       <v-text-field
         :loading="loading"
         density="compact"
         variant="solo"
-        label="Search templates"
+        label="Search contract"
         prepend-inner-icon="mdi-magnify"
         single-line
         hide-details
+        clearable
         @click:append-inner="onClick"
         class="search_text"
         v-model="address"
@@ -275,7 +289,8 @@ export default {
   padding: 4px 12px; /* Add padding to create some spacing around the content */
   display: flex;
   align-items: center;
-  width: 158px;
+  /* width: 410px; */
+  width: 170px;
   margin-right: 20px;
   white-space: nowrap; /* Prevent text from wrapping to the next line */
   overflow: clip; /* Hide overflowing content */
@@ -285,6 +300,7 @@ export default {
 .search_text {
   margin-right: 30px;
 }
+
 .connect-button img {
   margin-right: 8px; /* Add margin to the right of the image for spacing */
 }

@@ -38,8 +38,8 @@
       <!--  -->
     </v-navigation-drawer>
 
-    <v-main class="bg-grey-lighten-2">
-      <v-container>
+    <v-main class="bg-white-lighten-2">
+      <v-container style="background-color: white">
         <v-row v-if="contractList.length > 0">
           <template v-for="item in contractList" :key="item.address">
             <v-col class="mt-2" cols="12">
@@ -52,21 +52,29 @@
               v-for="inventory of filteredInventory(item.address)"
               :key="`${item.address}${inventory.name}`"
             >
-              <v-sheet class="embossed-sheet" width="200" height="400">
+              <v-sheet
+                class="embossed-sheet"
+                width="250"
+                height="550"
+                style="
+                  margin: 10px;
+                  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+                  border-radius: 15px;
+                "
+              >
                 <v-img
                   :src="inventory.image"
                   :alt="inventory.name"
-                  style="margin: 10px"
+                  style="margin: 10px; padding-top: 10px; border-radius: 20px"
                   @click="imageClick(`${inventory.image}`)"
                 ></v-img>
-                <div style="border-bottom: 1px dashed grey"></div>
                 <h4 class="tokenName">
                   <strong>{{ inventory.name }}</strong>
                 </h4>
                 <table>
                   <tr>
-                    <th>trait_type</th>
-                    <th>value</th>
+                    <th>Trait_type</th>
+                    <th>Value</th>
                   </tr>
                   <template
                     v-for="attr in inventory.attributes"
@@ -81,6 +89,7 @@
               </v-sheet>
             </v-col>
           </template>
+          <hr style="border-top: 1px solid grey; margin-top: 10px" />
         </v-row>
         <v-row v-else>
           <h3>{{ progressMessage }}</h3>
@@ -120,7 +129,7 @@ export default {
       this.fetchAllTokenIDs();
     },
     userAddress() {
-      this.address = this.userAddress
+      this.address = this.userAddress;
     },
     address() {
       this.fetchAllTokenIDs();
@@ -272,24 +281,31 @@ export default {
 }
 
 .tokenName {
-  margin-top: 10px;
+  text-align: center;
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
-  border: 1px solid black;
-  font-size: 10px;
+  font-size: 15px;
+  color: grey;
+  margin-top: 15px;
 }
 
-th,
-td {
-  border: 1px solid black;
-  padding: 8px;
+table > tr > th:nth-child(1),
+table > tr > td:nth-child(1) {
+  padding: 3px 10px 3px 10px;
   text-align: left;
 }
 
-th {
-  background-color: #f2f2f2;
+table > tr > th:nth-child(2),
+table > tr > td:nth-child(2) {
+  padding: 3px 10px 3px 10px;
+  text-align: right;
+}
+
+table > tr > th:nth-child(1),
+table > tr > th:nth-child(2) {
+  font-size: 17px;
 }
 </style>

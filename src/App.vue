@@ -364,4 +364,13 @@ table > tr > th:nth-child(2) {
   margin: 50px;
   font-weight: bold;
 }
+
+a {
+  color: inherit; /* 기본 링크 색상을 상속받음 */
+  text-decoration: none; /* 링크의 밑줄 제거 */
+}
+
+a:visited {
+  color: inherit; /* 방문한 링크의 색상도 상속받음 */
+}
 </style>

@@ -13,19 +13,31 @@
     <v-app-bar style="background: rgb(50.62.69)">
       <!-- <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon> -->
       <v-toolbar-title>
-        <h4>MY NFT GALLERY</h4>
-        <!-- <img
-          src="/logo01.png"
-          style="
-            max-width: 165px;
-            min-width: 165px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          "
-          onclick="window.open('https://www.metaplanet.tech', '_blank');"
-        /> -->
+        <div style="display: flex; align-items: center">
+          <img
+            src="/logo01.png"
+            style="
+              max-width: 120px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+            "
+            onclick="window.open('https://www.metaplanet.tech', '_blank');"
+          />
+          <div
+            v-if="this.address?.length > 0"
+            style="
+              font-family: 'Times New Roman', Times, serif;
+              font-style: italic;
+              font-weight: bold;
+              font-size: 22px;
+              margin-left: 50px;
+            "
+          >
+            My NFT Gallery
+          </div>
+        </div>
       </v-toolbar-title>
       <v-select
         class="select_network"

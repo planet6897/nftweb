@@ -13,7 +13,8 @@
     <v-app-bar style="background: rgb(50.62.69)">
       <!-- <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon> -->
       <v-toolbar-title>
-        <img
+        <h4>MY NFT GALLERY</h4>
+        <!-- <img
           src="/logo01.png"
           style="
             max-width: 165px;
@@ -24,7 +25,7 @@
             cursor: pointer;
           "
           onclick="window.open('https://www.metaplanet.tech', '_blank');"
-        />
+        /> -->
       </v-toolbar-title>
       <v-text-field
         :loading="loading"
@@ -52,8 +53,8 @@
       <!--  -->
     </v-navigation-drawer>
 
-    <v-main class="bg-white-lighten-2">
-      <v-container style="background-color: white">
+    <v-main class="bg-white-lighten-2 background">
+      <v-container>
         <v-row v-if="contractList.length > 0">
           <template v-for="item in contractList" :key="item.address">
             <v-col class="mt-2" cols="12">
@@ -274,6 +275,12 @@ export default {
 };
 </script>
 <style>
+.background {
+  background-image: url("/background.jpg");
+  background-size: 100%;
+  background-attachment: fixed;
+}
+
 .embossed-sheet {
   margin: 10px;
   border: 2px solid blue;
@@ -307,7 +314,8 @@ export default {
 
 .contract_sheet {
   margin-top: 20px;
-  background: lightblue;
+  /* background: lightblue; */
+  color: white;
   border-radius: 15px;
   padding: 10px;
 }
@@ -320,7 +328,7 @@ export default {
 }
 
 .contract_detail {
-  margin-left: 80px;
+  margin-left: 20px;
   font-size: 18px;
 }
 
@@ -363,6 +371,7 @@ table > tr > th:nth-child(2) {
   font-size: 30px;
   margin: 50px;
   font-weight: bold;
+  color: white;
 }
 
 a {

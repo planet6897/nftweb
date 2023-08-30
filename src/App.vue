@@ -27,7 +27,14 @@
           onclick="window.open('https://www.metaplanet.tech', '_blank');"
         /> -->
       </v-toolbar-title>
+      <v-select
+        class="select_network"
+        :items="networks"
+        v-model="selectedNetwork"
+        hide-details
+      ></v-select>
       <v-text-field
+        class="search_text"
         :loading="loading"
         density="compact"
         variant="solo"
@@ -37,10 +44,13 @@
         hide-details
         clearable
         @click:append-inner="onClick"
-        class="search_text"
         v-model="address"
       ></v-text-field>
-      <div v-if="isLoggedIn" class="connect-button">
+      <div
+        v-if="isLoggedIn"
+        class="connect-button"
+        v-on:click="this.address = this.userAddress"
+      >
         <!-- <button @click="logout">Logout</button> -->
         <strong> {{ userAddress }}</strong>
       </div>
@@ -72,6 +82,10 @@
                     target="_blank"
                     >{{ item.address }}</a
                   >
+                </p>
+                <p class="contract_detail">
+                  <strong>Quantity : </strong
+                  >{{ filteredInventory(item.address).length }}
                 </p>
               </div>
             </v-col>
@@ -148,6 +162,8 @@ export default {
       contractList: [],
       tokensInfo: [],
       progressMessage: "",
+      networks: ["Ethereum Mainnet", "BNB Smart Chain", "Mumbai Polygon"],
+      selectedNetwork: "",
     };
   },
   watch: {
@@ -159,6 +175,19 @@ export default {
     },
     address() {
       this.fetchAllTokenIDs();
+    },
+    selectedNetwork() {
+      switch (this.selectedNetwork) {
+        case "Ethereum Mainnet":
+          this.chainID = 1;
+          break;
+        case "BNB Smart Chain":
+          this.chainID = 56;
+          break;
+        case "Mumbai Polygon":
+          this.chainID = 80001;
+          break;
+      }
     },
   },
   methods: {
@@ -179,11 +208,34 @@ export default {
         // Get the user's account address
         const accounts = await provider.eth.getAccounts();
         this.userAddress = accounts[0];
-        this.chainID = window.ethereum.networkVersion;
+        this.chainID = parseInt(window.ethereum.networkVersion);
         this.isLoggedIn = true;
+
+        switch (this.chainID) {
+          case 1:
+            this.selectedNetwork = "Ethereum Mainnet";
+            break;
+          case 56:
+            this.selectedNetwork = "BNB Smart Chain";
+            break;
+          case 80001:
+            this.selectedNetwork = "Mumbai Polygon";
+            break;
+        }
 
         window.ethereum.on("chainChanged", (chainId) => {
           this.chainID = parseInt(chainId);
+          switch (this.chainID) {
+            case 1:
+              this.selectedNetwork = "Ethereum Mainnet";
+              break;
+            case 56:
+              this.selectedNetwork = "BNB Smart Chain";
+              break;
+            case 80001:
+              this.selectedNetwork = "Mumbai Polygon";
+              break;
+          }
         });
 
         window.ethereum.on("accountsChanged", (accounts) => {
@@ -214,15 +266,19 @@ export default {
       await window.ethereum.request({ method: "eth_accounts" });
     },
     async fetchAllTokenIDs() {
-      this.progressMessage = "처리 중입니다.";
-
       if (window.ethereum.isConnected() == false) {
         return;
       }
 
-      if (this.chainID == 0 || this.address == null) {
+      if (
+        this.chainID == 0 ||
+        this.address == null ||
+        this.address.length == 0
+      ) {
         return;
       }
+
+      this.progressMessage = "처리 중입니다.";
 
       try {
         const apiUrl = `https://appsdev.metaplanet.tech/v1/nft/list?chainID=${this.chainID}&address=${this.address}`;
@@ -302,6 +358,11 @@ export default {
   white-space: nowrap; /* Prevent text from wrapping to the next line */
   overflow: clip; /* Hide overflowing content */
   text-overflow: ellipsis; /* Display ellipsis (...) for truncated text */
+}
+
+.select_network {
+  max-width: 200px;
+  margin-right: 30px;
 }
 
 .search_text {

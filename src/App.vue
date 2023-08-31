@@ -117,9 +117,18 @@
               >
                 <v-img
                   class="v-img"
-                  :src="inventory.image"
+                  :src="
+                    inventory.image.replace('ipfs://', 'https://ipfs.io/ipfs/')
+                  "
                   :alt="inventory.name"
-                  @click="imageClick(`${inventory.image}`)"
+                  @click="
+                    imageClick(
+                      `${inventory.image.replace(
+                        'ipfs://',
+                        'https://ipfs.io/ipfs/'
+                      )}`
+                    )
+                  "
                 ></v-img>
                 <h4 class="name">
                   <strong>{{ inventory.name }}</strong>

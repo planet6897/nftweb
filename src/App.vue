@@ -26,7 +26,6 @@
             onclick="window.open('https://www.metaplanet.tech', '_blank');"
           />
           <div
-            v-if="this.address?.length > 0"
             style="
               font-family: 'Times New Roman', Times, serif;
               font-style: italic;

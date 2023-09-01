@@ -121,14 +121,7 @@
                     inventory.image.replace('ipfs://', 'https://ipfs.io/ipfs/')
                   "
                   :alt="inventory.name"
-                  @click="
-                    imageClick(
-                      `${inventory.image.replace(
-                        'ipfs://',
-                        'https://ipfs.io/ipfs/'
-                      )}`
-                    )
-                  "
+                  @click="itemClick(item.address, inventory)"
                 ></v-img>
                 <h4 class="name">
                   <strong>{{ inventory.name }}</strong>
@@ -177,14 +170,14 @@ export default {
       drawer: null,
       isLoggedIn: false,
       // chainID: 56,
-      chainID: 0,
+      chainID: 1,
       userAddress: null,
       address: null,
       contractList: [],
       tokensInfo: [],
       progressMessage: "",
       networks: ["Ethereum Mainnet", "BNB Smart Chain", "Mumbai Polygon"],
-      selectedNetwork: "",
+      selectedNetwork: "Ethereum Mainnet",
     };
   },
   watch: {
@@ -212,8 +205,21 @@ export default {
     },
   },
   methods: {
-    imageClick(imageUrl) {
-      window.open(imageUrl, "_blank");
+    itemClick(contractAddress, item) {
+      switch (this.chainID) {
+        case 1: {
+          const url = `https://etherscan.io/nft/${contractAddress}/${item.tokenID}`;
+          window.open(url, "_blank");
+          break;
+        }
+        default: {
+          const imageUrl = item.image.replace(
+            "ipfs://",
+            "https://ipfs.io/ipfs/"
+          );
+          window.open(imageUrl, "_blank");
+        }
+      }
     },
     async connectAndLogin() {
       // Check if Metamask is installed
@@ -329,7 +335,7 @@ export default {
             try {
               const apiUrl = `https://appsdev.metaplanet.tech/v1/nft/info?chainID=${this.chainID}&address=${this.address}&contractAddress=${item.address}&tokenID=${tokenID}`;
               const response = await axios.get(apiUrl);
-              inventory[tokenID] = response.data;
+              inventory[tokenID] = { ...response.data, tokenID: tokenID };
             } catch (err) {
               console.log(err);
             }

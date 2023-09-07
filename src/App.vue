@@ -46,7 +46,6 @@
       ></v-select>
       <v-text-field
         class="search_text"
-        :loading="loading"
         density="compact"
         variant="solo"
         label="Search contract"
@@ -54,8 +53,8 @@
         single-line
         hide-details
         clearable
-        @click:append-inner="onClick"
         v-model="address"
+        @click:clear="clearSearch"
       ></v-text-field>
       <div
         v-if="isLoggedIn"
@@ -144,8 +143,65 @@
             </v-col>
           </template>
         </v-row>
-        <v-row v-else>
+        <v-row v-else-if="progressMessage.length > 0">
           <div class="progressMessage">{{ progressMessage }}</div>
+        </v-row>
+        <v-row class="contract_info" v-else>
+          <v-col cols="12" class="mt-8">
+            <v-row>
+              <div style="width: 400px">BoredApeYachtClub</div>
+              <v-select
+                class="select_address"
+                :items="BoredApeYachtClub"
+                v-model="address"
+                hide-details
+              ></v-select>
+            </v-row>
+          </v-col>
+          <v-col cols="12" class="mt-8">
+            <v-row>
+              <div style="width: 400px">MutantApeYachtClub</div>
+              <v-select
+                class="select_address"
+                :items="MutantApeYachtClub"
+                v-model="address"
+                hide-details
+              ></v-select>
+            </v-row>
+          </v-col>
+          <v-col cols="12" class="mt-8">
+            <v-row>
+              <div style="width: 400px">Dreadfulz</div>
+              <v-select
+                class="select_address"
+                :items="Dreadfulz"
+                v-model="address"
+                hide-details
+              ></v-select>
+            </v-row>
+          </v-col>
+          <v-col cols="12" class="mt-8">
+            <v-row>
+              <div style="width: 400px">parallel</div>
+              <v-select
+                class="select_address"
+                :items="parallel"
+                v-model="address"
+                hide-details
+              ></v-select>
+            </v-row>
+          </v-col>
+          <v-col cols="12" class="mt-8">
+            <v-row>
+              <div style="width: 400px">MetaZellys</div>
+              <v-select
+                class="select_address"
+                :items="MetaZellys"
+                v-model="address"
+                hide-details
+              ></v-select>
+            </v-row>
+          </v-col>
         </v-row>
       </v-container>
     </v-main>
@@ -177,6 +233,70 @@ export default {
       progressMessage: "",
       networks: ["Ethereum Mainnet", "BNB Smart Chain", "Mumbai Polygon"],
       selectedNetwork: "Ethereum Mainnet",
+
+      BoredApeYachtClub: [
+        "0x7eb413211a9DE1cd2FE8b8Bb6055636c43F7d206",
+        "0xF02e86D9E0eFd57aD034FaF52201B79917fE0713",
+        "0xf090Eb4c2B63e7B26E8Bb09e6Fc0cC3A7586263B",
+        "0x720A4FaB08CB746fC90E88d1924a98104C0822Cf",
+        "0x7A9fe22691c811ea339D9B73150e6911a5343DcA",
+        "0xe3199072644455D19f58B1fd8106Ac80b3d2e780",
+        "0xF22742F06e4F6d68A8d0B49b9F270bB56affAB38",
+        "0xd66F8eAf84b11654a19126a98a3F55B960846Dd8",
+        "0x1CFB8a2e4c2e849593882213b2468E369271dad2",
+        "0xCA1257Ade6F4fA6c6834fdC42E030bE6C0f5A813",
+      ],
+      Dreadfulz: [
+        "0xb9F0111abecC02d3d42541D6D2957Af2BE96DeA8",
+        "0xa95b31421b35992D0Dc44cbBB30fB70212FD4580",
+        "0x87919C56Ae8AF48246afD5bA0eA2eceA034aBAcA",
+        "0x0ffB8c30736cb0C95F1aFa9BEe5294dBD3A0D779",
+        "0xFd96F75963FBaFF02341e3cFf43f48C1f3B13343",
+        "0x3d8703B683e29174263dA51E778b8e37b984aBc8",
+        "0xECA1bB9c8d3Fd8b926372f42c8D4c6c3ed0669B3",
+        "0xE95f23EE9cA2f73107E1F1B4650EED17EaFD1d09",
+      ],
+      MutantApeYachtClub: [
+        "0xF22742F06e4F6d68A8d0B49b9F270bB56affAB38",
+        "0xf090Eb4c2B63e7B26E8Bb09e6Fc0cC3A7586263B",
+        "0x4F773f3FC89b73B34FB57EBc667a245D5e3812F6",
+        "0xD4b06218C545C047ac3ACc7cE49d124C172DB409",
+        "0xaA621B960F22911462550c078df678493c22b2ae",
+        "0x7eb413211a9DE1cd2FE8b8Bb6055636c43F7d206",
+        "0x6b4DF334368b09f87B3722449703060EEf284126",
+        "0x720A4FaB08CB746fC90E88d1924a98104C0822Cf",
+        "0x6D5a7597896A703Fe8c85775B23395a48f971305",
+        "0x6C8Ee01F1f8B62E987b3D18F6F28b22a0Ada755f",
+      ],
+      parallel: [
+        "0x435d821Ee5b346850545cB18443ca9808A9d47D0",
+        "0x06e28C3c956D47eb163C8462F77CF52e3E00C2F8",
+        "0xec3564D31873b17101b21aA46aAAddCaa7F55525",
+        "0x8358305333cbB564148cf9FB44F3134f2208421a",
+        "0xc1B172595ddC335A9DD80B50117e457cE124bc36",
+        "0xe03e5A23C93d7bFc98755DB641c2321ea8555314",
+        "0xA8e54b46ae93E14eedaE486a9EFCD4c7B5a5be20",
+        "0xB1BBc29997826dfC94b144126135C0aabc8175a9",
+        "0xCcF43Dcc4e52e0216E461955bd98B08DA53213eA",
+      ],
+      MetaZellys: [
+        "0x83eE48BC1f96C651512274dd527E7895897668AD",
+        "0xf97213B04219585A20d2fCa56aA1d64f9dE73d4B",
+        "0x2761010826A0D0BBBF604aEa3EeFf35030DA2bC0",
+        "0x338ED8ca97543EdA9d226FE067294683Bcb9CE4c",
+        "0x704031d47812BA2cf4715496c5725de9d681cBb1",
+        "0xFF8c09864c1E824B2Ec0DF9087ee2507cd3d4324",
+        "0xb103D59225c508a22D0874Ffd60962029d7b2b31",
+        "0x32B48095D4272B9F19b856b7bdE0cE37BBCba54F",
+        "0xf552F127456e6064ef6b3A9CCEC9BD1B0Fb4B5Bc",
+        "0xDA8657c4052ABf16E6cB004BB28708019b39F0aE",
+        "0x8aAFb391f7487eb4be9C5dd7cFDCE4d225BA7073",
+        "0xe735A62742085A9040C1DF794a51398E96765BbB",
+        "0x2e09168519b55E90d1087fC2E18E02D2ED8C180a",
+        "0x7ea91C8685D274a365488C1303a3f8458Bea465d",
+        "0xc4E13F5Cc511A74bd03989955a6B7438F32A19D3",
+        "0x1705DeAC5a962D58fae307f3f45B666b95B9323B",
+      ],
     };
   },
   watch: {
@@ -204,6 +324,11 @@ export default {
     },
   },
   methods: {
+    clearSearch() {
+      this.address = "";
+      this.contractList = "";
+      this.progressMessage = "";
+    },
     itemClick(contractAddress, item) {
       switch (this.chainID) {
         case 1: {
@@ -412,6 +537,7 @@ export default {
   font-style: italic;
   font-weight: bold;
   padding: 10px;
+  color: white;
 }
 
 .contract_detail {
@@ -468,5 +594,10 @@ a {
 
 a:visited {
   color: inherit; /* 방문한 링크의 색상도 상속받음 */
+}
+
+.select_address {
+  max-width: 400px;
+  margin-left: 30px;
 }
 </style>

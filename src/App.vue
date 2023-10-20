@@ -193,10 +193,10 @@
           </v-col>
           <v-col cols="12" class="mt-8">
             <v-row>
-              <div style="width: 400px">MetaZellys</div>
+              <div style="width: 400px">Art World</div>
               <v-select
                 class="select_address"
-                :items="MetaZellys"
+                :items="ArtWorld"
                 v-model="address"
                 hide-details
               ></v-select>
@@ -231,9 +231,18 @@ export default {
       contractList: [],
       tokensInfo: [],
       progressMessage: "",
-      networks: ["Ethereum Mainnet", "BNB Smart Chain", "Mumbai Polygon"],
+      networks: [
+        "Ethereum Mainnet",
+        "BNB Smart Chain",
+        "Mumbai Polygon",
+        "Polygon",
+      ],
       selectedNetwork: "Ethereum Mainnet",
-
+      ArtWorld: [
+        "0x9F5851B8DadBC9d7BFaaA3109fd5eB4937346D11",
+        "0x18817A4d5C25d3B43eE6EB1cD29304A7133fD877",
+        "0x324ddfe367006D8a0ebd265201f45c930E85DDBB",
+      ],
       BoredApeYachtClub: [
         "0x7eb413211a9DE1cd2FE8b8Bb6055636c43F7d206",
         "0xF02e86D9E0eFd57aD034FaF52201B79917fE0713",
@@ -279,24 +288,6 @@ export default {
         "0xB1BBc29997826dfC94b144126135C0aabc8175a9",
         "0xCcF43Dcc4e52e0216E461955bd98B08DA53213eA",
       ],
-      MetaZellys: [
-        "0x83eE48BC1f96C651512274dd527E7895897668AD",
-        "0xf97213B04219585A20d2fCa56aA1d64f9dE73d4B",
-        "0x2761010826A0D0BBBF604aEa3EeFf35030DA2bC0",
-        "0x338ED8ca97543EdA9d226FE067294683Bcb9CE4c",
-        "0x704031d47812BA2cf4715496c5725de9d681cBb1",
-        "0xFF8c09864c1E824B2Ec0DF9087ee2507cd3d4324",
-        "0xb103D59225c508a22D0874Ffd60962029d7b2b31",
-        "0x32B48095D4272B9F19b856b7bdE0cE37BBCba54F",
-        "0xf552F127456e6064ef6b3A9CCEC9BD1B0Fb4B5Bc",
-        "0xDA8657c4052ABf16E6cB004BB28708019b39F0aE",
-        "0x8aAFb391f7487eb4be9C5dd7cFDCE4d225BA7073",
-        "0xe735A62742085A9040C1DF794a51398E96765BbB",
-        "0x2e09168519b55E90d1087fC2E18E02D2ED8C180a",
-        "0x7ea91C8685D274a365488C1303a3f8458Bea465d",
-        "0xc4E13F5Cc511A74bd03989955a6B7438F32A19D3",
-        "0x1705DeAC5a962D58fae307f3f45B666b95B9323B",
-      ],
     };
   },
   watch: {
@@ -319,6 +310,9 @@ export default {
           break;
         case "Mumbai Polygon":
           this.chainID = 80001;
+          break;
+        case "Polygon":
+          this.chainID = 137;
           break;
       }
     },
@@ -385,6 +379,9 @@ export default {
               break;
             case 80001:
               this.selectedNetwork = "Mumbai Polygon";
+              break;
+            case 137:
+              this.selectedNetwork = "Polygon";
               break;
           }
         });
